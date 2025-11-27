@@ -28,8 +28,9 @@ sudo dnf install -y nodejs npm
 # 2. Install dependencies
 npm install
 
-# 3. Create .env.local file
-echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+# 3. Create .env.local file (optional - defaults work)
+echo "VITE_OLLAMA_BASE_URL=http://localhost:11434" > .env.local
+echo "VITE_OLLAMA_MODEL=llama3.2:3b" >> .env.local
 
 # 4. Start the server
 npm run dev
@@ -49,8 +50,9 @@ sudo dnf install -y docker docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
 
-# 3. Set API key
-echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+# 3. Configure Ollama (optional - defaults work)
+echo "VITE_OLLAMA_BASE_URL=http://localhost:11434" > .env.local
+echo "VITE_OLLAMA_MODEL=llama3.2:3b" >> .env.local
 
 # 4. Build and run
 docker-compose up -d

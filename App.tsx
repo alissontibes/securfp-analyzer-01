@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import * as XLSX from 'xlsx';
 import { RFPItem, VendorContext, SECURITY_DOMAINS, Language } from './types';
-import { analyzeRFPRequirement } from './services/geminiService';
+import { analyzeRFPRequirement } from './services/ollamaService';
 import { translations } from './utils/translations';
 import Header from './components/Header';
 import InputSection from './components/InputSection';

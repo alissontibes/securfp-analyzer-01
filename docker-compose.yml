@@ -10,9 +10,12 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - VITE_OLLAMA_BASE_URL=${VITE_OLLAMA_BASE_URL:-http://ollama:11434}
+      - VITE_OLLAMA_MODEL=${VITE_OLLAMA_MODEL:-llama3.2:3b}
     env_file:
       - .env.local
+    depends_on:
+      - ollama
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
@@ -23,7 +26,21 @@ services:
     networks:
       - securfp-network
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - securfp-network
+
 networks:
   securfp-network:
     driver: bridge
+
+volumes:
+  ollama-data:
 

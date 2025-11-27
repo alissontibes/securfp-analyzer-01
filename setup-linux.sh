@@ -99,17 +99,23 @@ setup_env() {
         fi
     fi
     
-    print_info "Please enter your Gemini API key."
-    print_info "You can get one from: https://aistudio.google.com/apikey"
-    read -p "Gemini API Key: " API_KEY
+    print_info "Configuring Ollama settings."
+    print_info "The application uses Ollama for local AI processing (no API key needed)."
     
-    if [ -z "$API_KEY" ]; then
-        print_warning "No API key provided. You can set it later in .env.local"
-        echo "GEMINI_API_KEY=" > .env.local
-    else
-        echo "GEMINI_API_KEY=$API_KEY" > .env.local
-        print_success "API key saved to .env.local"
-    fi
+    read -p "Ollama base URL [http://localhost:11434]: " OLLAMA_URL
+    OLLAMA_URL=${OLLAMA_URL:-http://localhost:11434}
+    
+    read -p "Ollama model [llama3.2:3b]: " OLLAMA_MODEL
+    OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2:3b}
+    
+    echo "VITE_OLLAMA_BASE_URL=$OLLAMA_URL" > .env.local
+    echo "VITE_OLLAMA_MODEL=$OLLAMA_MODEL" >> .env.local
+    
+    print_success "Ollama configuration saved to .env.local"
+    print_info "Make sure Ollama is installed and running:"
+    print_info "  curl -fsSL https://ollama.com/install.sh | sh"
+    print_info "  ollama serve"
+    print_info "  ollama pull $OLLAMA_MODEL"
     
     # Ensure .env.local is not committed
     if [ -f ".gitignore" ]; then

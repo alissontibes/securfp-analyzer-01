@@ -4,7 +4,7 @@ export const translations = {
   pt: {
     appTitle: 'SecuRFP Analyzer',
     appSubtitle: 'Automação de Resposta Técnica',
-    geminiBadge: 'Gemini 2.5 Flash + Search',
+    geminiBadge: 'Ollama Local AI',
     configTitle: 'Configuração do Analista',
     selectVendor: 'Selecione o Fabricante para Validação (Líderes de Mercado)',
     inputTitle: 'Entrada de Requisitos',
@@ -48,7 +48,7 @@ export const translations = {
   en: {
     appTitle: 'SecuRFP Analyzer',
     appSubtitle: 'RFP Response Automation',
-    geminiBadge: 'Gemini 2.5 Flash + Search',
+    geminiBadge: 'Ollama Local AI',
     configTitle: 'Analyst Configuration',
     selectVendor: 'Select Vendor for Validation (Market Leaders)',
     inputTitle: 'Requirements Input',
@@ -92,7 +92,7 @@ export const translations = {
   es: {
     appTitle: 'SecuRFP Analyzer',
     appSubtitle: 'Automatización de Respuesta Técnica',
-    geminiBadge: 'Gemini 2.5 Flash + Search',
+    geminiBadge: 'Ollama Local AI',
     configTitle: 'Configuración del Analista',
     selectVendor: 'Seleccione Fabricante para Validación (Líderes de Mercado)',
     inputTitle: 'Entrada de Requisitos',

@@ -10,24 +10,45 @@ View your app in AI Studio: https://ai.studio/apps/temp/1
 
 ## Quick Start
 
-**Prerequisites:** Node.js 18 or higher
+**Prerequisites:** 
+- Node.js 18 or higher
+- Ollama installed and running (see [OLLAMA_SETUP.md](OLLAMA_SETUP.md))
 
-1. Install dependencies:
+1. **Install Ollama** (if not already installed):
+   ```bash
+   # Linux/macOS
+   curl -fsSL https://ollama.com/install.sh | sh
+   
+   # Or download from https://ollama.com/download
+   ```
+
+2. **Start Ollama and install a model:**
+   ```bash
+   # Start Ollama service
+   ollama serve
+   
+   # In another terminal, install a model (recommended: llama3.2:3b)
+   ollama pull llama3.2:3b
+   ```
+
+3. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. Set the `GEMINI_API_KEY` in `.env.local` to your Gemini API key:
+4. **Configure Ollama** (optional - defaults work for local setup):
    ```bash
-   echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+   # Create .env.local with Ollama settings
+   echo "VITE_OLLAMA_BASE_URL=http://localhost:11434" > .env.local
+   echo "VITE_OLLAMA_MODEL=llama3.2:3b" >> .env.local
    ```
 
-3. Run the app:
+5. **Run the app:**
    ```bash
    npm run dev
    ```
 
-4. Open your browser at `http://localhost:3000`
+6. **Open your browser at `http://localhost:3000`**
 
 ## Platform-Specific Installation
 
@@ -52,12 +73,15 @@ The setup script will:
 
 ### Docker Installation (Linux/Any Platform)
 
+**Note:** For Docker deployment, you'll need to run Ollama separately or use Docker Compose with both services.
+
 **Using Docker Compose:**
 ```bash
-# Set your API key
-echo "GEMINI_API_KEY=your_api_key_here" > .env.local
+# Configure Ollama settings
+echo "VITE_OLLAMA_BASE_URL=http://ollama:11434" > .env.local
+echo "VITE_OLLAMA_MODEL=llama3.2:3b" >> .env.local
 
-# Build and run
+# Build and run (requires docker-compose.yml with Ollama service)
 docker-compose up -d
 
 # View logs
@@ -72,10 +96,11 @@ docker-compose down
 # Build image
 docker build -t securfp-analyzer .
 
-# Run container
+# Run container (Ollama must be accessible)
 docker run -d \
   -p 3000:3000 \
-  -e GEMINI_API_KEY=your_api_key_here \
+  -e VITE_OLLAMA_BASE_URL=http://host.docker.internal:11434 \
+  -e VITE_OLLAMA_MODEL=llama3.2:3b \
   --name securfp-analyzer \
   securfp-analyzer
 ```
@@ -88,12 +113,17 @@ docker run -d \
 
 ## Configuration
 
-The application requires a Gemini API key. Get one from [Google AI Studio](https://aistudiocdn.com/apikey).
+The application uses **Ollama** for local AI processing. No API keys needed!
 
-Create a `.env.local` file in the project root:
+**Ollama Configuration:**
+
+Create a `.env.local` file in the project root (optional - defaults work for local setup):
 ```
-GEMINI_API_KEY=your_api_key_here
+VITE_OLLAMA_BASE_URL=http://localhost:11434
+VITE_OLLAMA_MODEL=llama3.2:3b
 ```
+
+**See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for detailed setup instructions.**
 
 ## Network Access
 
@@ -103,4 +133,16 @@ The server is configured to listen on `0.0.0.0:3000`, making it accessible from:
 
 ## Troubleshooting
 
-See [INSTALL_LINUX.md](INSTALL_LINUX.md) for Linux-specific troubleshooting, or check the main documentation for your platform.
+- **Ollama Setup:** See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for Ollama installation and configuration
+- **Linux Installation:** See [INSTALL_LINUX.md](INSTALL_LINUX.md) for Linux-specific troubleshooting
+- **Quick Start:** See [LINUX_QUICK_START.md](LINUX_QUICK_START.md) for quick reference
+
+## AI Model Options
+
+This application uses **Ollama** for local AI processing. You can use any Ollama-compatible model:
+
+- **Recommended:** `llama3.2:3b` (good balance of quality and speed)
+- **Better Quality:** `llama3.1:8b` or `mistral:7b` (requires more RAM)
+- **Faster/Lighter:** `tinyllama:1.1b` or `phi3:mini` (lower resource usage)
+
+See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for model recommendations and installation.
