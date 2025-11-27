@@ -10,6 +10,26 @@ View your app in AI Studio: https://ai.studio/apps/temp/1
 
 ## Quick Start
 
+### Using Remote Ollama (Cloud Model)
+
+If you have Ollama running on a remote server with cloud models:
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Configure for remote Ollama
+echo "VITE_OLLAMA_BASE_URL=http://172.16.0.4:11434" > .env.local
+echo "VITE_OLLAMA_MODEL=gpt-oss:120b-cloud" >> .env.local
+
+# 3. Start the server
+npm run dev
+```
+
+See [QUICK_START_REMOTE.md](QUICK_START_REMOTE.md) for detailed remote setup.
+
+### Using Local Ollama
+
 **Prerequisites:** 
 - Node.js 18 or higher
 - Ollama installed and running (see [OLLAMA_SETUP.md](OLLAMA_SETUP.md))
@@ -38,9 +58,13 @@ View your app in AI Studio: https://ai.studio/apps/temp/1
 
 4. **Configure Ollama** (optional - defaults work for local setup):
    ```bash
-   # Create .env.local with Ollama settings
+   # For local Ollama
    echo "VITE_OLLAMA_BASE_URL=http://localhost:11434" > .env.local
    echo "VITE_OLLAMA_MODEL=llama3.2:3b" >> .env.local
+   
+   # OR for remote Ollama (e.g., cloud model)
+   echo "VITE_OLLAMA_BASE_URL=http://172.16.0.4:11434" > .env.local
+   echo "VITE_OLLAMA_MODEL=gpt-oss:120b-cloud" >> .env.local
    ```
 
 5. **Run the app:**
@@ -113,9 +137,9 @@ docker run -d \
 
 ## Configuration
 
-The application uses **Ollama** for local AI processing. No API keys needed!
+The application uses **Ollama** for AI processing. No API keys needed!
 
-**Ollama Configuration:**
+### Local Ollama Setup
 
 Create a `.env.local` file in the project root (optional - defaults work for local setup):
 ```
@@ -123,7 +147,24 @@ VITE_OLLAMA_BASE_URL=http://localhost:11434
 VITE_OLLAMA_MODEL=llama3.2:3b
 ```
 
+### Remote Ollama Setup
+
+If Ollama is running on a different machine:
+
+```
+VITE_OLLAMA_BASE_URL=http://172.16.0.4:11434
+VITE_OLLAMA_MODEL=gpt-oss:120b-cloud
+```
+
+**Example:** To use a cloud model on a remote Ollama server:
+```bash
+echo "VITE_OLLAMA_BASE_URL=http://172.16.0.4:11434" > .env.local
+echo "VITE_OLLAMA_MODEL=gpt-oss:120b-cloud" >> .env.local
+```
+
 **See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for detailed setup instructions.**
+**See [REMOTE_OLLAMA_SETUP.md](REMOTE_OLLAMA_SETUP.md) for remote Ollama configuration.**
+**See [QUICK_START_REMOTE.md](QUICK_START_REMOTE.md) for quick remote setup guide.**
 
 ## Network Access
 
@@ -134,15 +175,49 @@ The server is configured to listen on `0.0.0.0:3000`, making it accessible from:
 ## Troubleshooting
 
 - **Ollama Setup:** See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for Ollama installation and configuration
+- **Remote Ollama:** See [REMOTE_OLLAMA_SETUP.md](REMOTE_OLLAMA_SETUP.md) for remote server configuration
+- **Quick Remote Setup:** See [QUICK_START_REMOTE.md](QUICK_START_REMOTE.md) for quick remote setup
 - **Linux Installation:** See [INSTALL_LINUX.md](INSTALL_LINUX.md) for Linux-specific troubleshooting
 - **Quick Start:** See [LINUX_QUICK_START.md](LINUX_QUICK_START.md) for quick reference
 
+### Common Issues
+
+**Connection Error:** "Ollama não está disponível"
+- Verify Ollama is running: `curl http://localhost:11434/api/tags` (or your remote URL)
+- Check firewall settings if using remote Ollama
+- Ensure Ollama is configured to listen on `0.0.0.0` (not just `localhost`) for remote access
+
+**Model Not Found:**
+- Check available models: `curl http://your-ollama-url:11434/api/tags`
+- Update `.env.local` with the correct model name
+- For cloud models, ensure internet connectivity on the Ollama server
+
 ## AI Model Options
 
-This application uses **Ollama** for local AI processing. You can use any Ollama-compatible model:
+This application uses **Ollama** for AI processing. You can use any Ollama-compatible model:
+
+### Local Models (Run on your machine)
 
 - **Recommended:** `llama3.2:3b` (good balance of quality and speed)
 - **Better Quality:** `llama3.1:8b` or `mistral:7b` (requires more RAM)
 - **Faster/Lighter:** `tinyllama:1.1b` or `phi3:mini` (lower resource usage)
+- **Large Models:** `llama3.1:70b` or `llama3.1:120b` (requires significant RAM)
+
+### Cloud Models (Hosted on Ollama Cloud)
+
+- **Cloud Models:** `gpt-oss:120b-cloud` (116.8B parameters, requires internet connection)
+- Cloud models are accessed through Ollama's cloud service
+- No local storage required, but requires internet connectivity
+
+### Finding Available Models
+
+To see available models on your Ollama server:
+```bash
+# Local Ollama
+curl http://localhost:11434/api/tags
+
+# Remote Ollama
+curl http://172.16.0.4:11434/api/tags
+```
 
 See [OLLAMA_SETUP.md](OLLAMA_SETUP.md) for model recommendations and installation.
